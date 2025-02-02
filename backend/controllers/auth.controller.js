@@ -70,12 +70,54 @@ export const signup = async (req,res)=>{
 }
 
 export const login = async (req, res)=>{
-    res.status(200).json({
-        data : "you hit the login end point"
-    })
+    try{
+        const {username, password} = req.body
+        const user = await User.findOne({username})
+        const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
+
+        if(!user || !isPasswordCorrect){
+            return res.status(400).json({
+                error : "invalid username or password"
+            })
+        }
+        generateTokenAndSetCookie(user._id, res)
+        return res.status(200).json({
+            id : user._id,
+            fullName : user.fullName,
+            email : user.email,
+            username : user.username,
+            followers : user.followers,
+            following  : user.following,
+            profileImg : user.profileImg,
+            coverImg : user.coverImg
+        })
+
+    }catch(error){
+        return res.status(500).json({
+            error : error.message
+        })
+    }
 }
 export const logout = async (req, res)=>{
-    res.status(200).json({
-        data : "you hit the logout end point"
-    })
+    try{
+        res.cookie("jwt","",{maxAge:0})
+        res.status(200).json({
+            message : "logged out successfully"
+        })
+    }catch(error){
+        res.status(500).json({
+            error : error.message
+        })
+    }
+}
+
+export const getMe = async (req, res) =>{
+    try{
+        const user = await User.findById(req.user._id).select("-password")
+        res.status(200).json({user})
+    }catch(error){
+        res.status(500).json({
+            error : error.message 
+        })
+    }
 }
