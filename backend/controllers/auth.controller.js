@@ -5,12 +5,17 @@ import bcrypt from "bcryptjs" // To hash the password
 export const signup = async (req,res)=>{
     try{
         const {fullName, username, email, password} = req.body
+        if(!fullName || !username || !email || !password){
+            return res.status(400).json({
+                error: "Fill out all the fields!"
+              });
+        }
         // To verify email 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if(!emailRegex.test(email)){
-            return res.status(400).json({
-                error : "Invalid email format"
-            })
+        if (!emailRegex.test(email)) {
+          return res.status(400).json({
+            error: "Invalid email format"
+          });
         }
         // To check whether the username already exist 
         const existingUser = await User.findOne({username})
@@ -74,7 +79,6 @@ export const login = async (req, res)=>{
         const {username, password} = req.body
         const user = await User.findOne({username})
         const isPasswordCorrect = await bcrypt.compare(password, user?.password || "")
-
         if(!user || !isPasswordCorrect){
             return res.status(400).json({
                 error : "invalid username or password"

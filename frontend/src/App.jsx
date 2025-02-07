@@ -8,6 +8,7 @@ import Sidebar from './components/common/Sidebar'
 import RightPanel from './components/common/RightPanel'
 import NotificationPage from './pages/notification/NotificationPage'
 import ProfilePage from './pages/profile/ProfilePage'
+import { Toaster } from 'react-hot-toast'
 
 
 export default function App() {        
@@ -22,6 +23,7 @@ export default function App() {
         <Route path='/profile/:username' element={<ProfilePage />} />
       </Routes>
       <RightPanel />
+      <Toaster />  {/* notification polathe top ile success error sambavam varan */}
     </div>
   )
 }
