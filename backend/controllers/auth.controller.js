@@ -116,12 +116,19 @@ export const logout = async (req, res)=>{
 }
 
 export const getMe = async (req, res) =>{
+    console.log("mier")
     try{
         const user = await User.findById(req.user._id).select("-password")
-        res.status(200).json({user})
+        console.log("user : ", user)
+        if(!user){
+            res.status(401).json({
+                error : "please login to continue"
+            })
+        }
+        res.status(200).json(user)
     }catch(error){
         res.status(500).json({
-            error : error.message 
+            error : error.message
         })
     }
 }

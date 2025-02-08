@@ -11,7 +11,7 @@ import cookieParser from "cookie-parser"   // to get cookie
 import { v2 as cloudinary } from "cloudinary"       // to setup the cloudinary
 
 const app = express()
-app.use(express.json())
+app.use(express.json({limit : "5mb"}))
 app.use(cookieParser()) // to get cookie 
 app.use(express.urlencoded({extended : true}))       // to parase data from urlencoded (postman)
 

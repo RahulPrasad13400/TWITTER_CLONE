@@ -1,18 +1,20 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import XSvg from "../../../components/svgs/X";
 
 import { MdOutlineMail } from "react-icons/md";
 import { MdPassword } from "react-icons/md";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
 const LoginPage = () => {
+	const navigate = useNavigate()
 	const [formData, setFormData] = useState({
 		username: "",
 		password: "",
 	});
+	const queryClient = useQueryClient()
 
 	const {mutate : loginMutation, isPending, error, isError} = useMutation({
 		mutationFn : async ({username, password}) =>{
@@ -35,7 +37,8 @@ const LoginPage = () => {
 			}
 		},
 		onSuccess : () =>{
-			toast.success("Login successfull!")
+			// refetch the authUser
+			queryClient.invalidateQueries({queryKey : ['authUser']})
 		},
 		onError : (error) =>{
 			toast.error("something went wrong try agin")
