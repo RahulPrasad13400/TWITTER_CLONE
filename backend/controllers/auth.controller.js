@@ -119,7 +119,6 @@ export const getMe = async (req, res) =>{
     console.log("mier")
     try{
         const user = await User.findById(req.user._id).select("-password")
-        console.log("user : ", user)
         if(!user){
             res.status(401).json({
                 error : "please login to continue"
