@@ -20,7 +20,6 @@ export default function App() {
     queryFn : async () =>{
       try{
         const res = await fetch('/api/auth/me')
-        console.log(res)
         const data = await res.json()
         if(data.error) return null 
         if(!res.ok) throw new Error(data.error || "Something went wrong")
@@ -37,8 +36,6 @@ export default function App() {
       <LoadingSpinner size='lg' />
     </div>
   }
-  
-  console.log("ashwin : ", authUser)
 
   return (
     <div className='flex max-w-6xl mx-auto'>

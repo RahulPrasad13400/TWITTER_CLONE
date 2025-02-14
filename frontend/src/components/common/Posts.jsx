@@ -5,15 +5,19 @@ import { useEffect } from "react";
 // import { POSTS } from "../../utils/db/dummy";
 
 
-const Posts = ({feedType}) => {
+const Posts = ({feedType, username, userId}) => {
 	// const isLoading = false;
 
 	const getPostEndPoint = () =>{
 		switch(feedType){
-			case "forYou":
+			case "forYou": // all posts 
 				return "/api/posts/all"
-			case "following":
+			case "following":	// posts of the following user 
 				return "/api/posts/following"
+			case "posts":     // posts of the selected user 
+				return `/api/posts/user/${username}`
+			case "likes":	// posts liked by the selected user 
+				return `/api/posts/likes/${userId}`
 			default:
 				return "/api/posts/all"
 		}
@@ -39,7 +43,7 @@ const Posts = ({feedType}) => {
 
 	useEffect(function(){
 		refetch()
-	},[feedType, refetch])
+	},[feedType, refetch, username])
 
 	return (
 		<>

@@ -236,7 +236,7 @@ export const getUserPosts = async (req, res) =>{
         const username = req.params.username
         const user = await User.findOne({username})
         if(!user){
-            res.status(404).json({
+            return res.status(404).json({
                 error : "User not found"
             })
         }
